@@ -1,7 +1,7 @@
 ---
 author:
 - yinxuhao \[xuhao_yin@163.com\]
-date: 2022-12-16
+date: 2022-12-19
 title: 第二单元学习笔记
 ---
 
@@ -81,4 +81,94 @@ $$(3.14+1e_{20})-1e_{20} = 0.0$$ but $$(3.14+1e_{20}-1e_{20}) = 3.14$$
 C数据类型的典型大小见下图：
 
 ![基本C数据类型的典型大小(以字节为单位)](size.png){#fig:size-png
+width="80%"}
+
+## 寻址和字节顺序
+
+**小端法**`little endian`: 最低有效字节在最前面放着。
+
+**大端法**`big endian`: 最高有效字节在最前面放着。
+
+具体示例见下图：
+
+![大端法与小端法](endian.png){#fig:endian-png width="80%"}
+
+``` C
+    #include <stdio.h>
+
+    typedef unsigned char *byte_pointer;
+
+    void show_bytes(byte_pointer start, size_t len) {
+        size_t i;
+        for(i = 0; i < len; i++) {
+            printf(" %.2x", start[i]);
+        }
+        printf("\n");
+     }
+
+     void show_int(int x) {
+        show_bytes((byte_pointer) &x, sizeof(int));
+    }
+
+    void show_float(float x);
+
+    void show_pointer(void *x);
+
+    void test_show_bytes(int val) {
+        int ival = val;
+        float fval = (float) val;
+        int *pval = &ival;
+        show_int(ival);
+        show_float(fval);
+        show_pointer(pval);
+    }
+```
+
+通过以上代码，可以打印出数据的两位十六进制格式输出。
+对比结果可以发现，`int`和`float`的结果一样，只是排列的
+大小端不同，而指针值不同，与机器相关。
+
+二进制代码是不兼容的。
+
+## 布尔代数
+
+![布尔代数的运算。二进制0和1代表逻辑值TRUE和FALSE.
+以上四张图依次是逻辑运算符NOT AND OR
+EXCLUSIVE-OR](bitwise.png){#fig:bitwise-png width="80%"}
+
+位向量一个很有用的应用就是**表示有限集合**。利用位向量
+$[a_{w-1}, \ldots, a_1, a_0]$可以编码任何子集$A \in {0, 1, \ldots, w - 1}$。
+
+例如，定义规则$a_i = 1 \iff i \in A$。
+
+位向量$a \dot{=} [01101001]$表示集合$A = {0, 3, 5, 6}$，
+而位向量$b \dot{=} [01010101]$表示集合$B = {0, 2, 4, 6}$。
+
+编码集合的使用方法是使用布尔运算。
+
+例如：$a \& b \rightarrow [010000001]$, 对应于$A \cap B = {0, 6}$。
+
+它的实际应用，还有使用位向量作为掩码有选择地使用或屏蔽一些信号，
+该掩码就是设置为有效信号的集合。
+
+C语言中的位级运算，其实是按照各个位对应的位运算来的。
+
+而C语言中的逻辑运算(\|\|、`&&`、`!`)则是把所有的
+非零参数都表示TRUE，参数0表示为FALSE。它们只返回1或0.
+而位级运算只在参数特殊时才与之有相同的结果。
+
+## 移位运算
+
+`x<<k`: 左移k位，即丢弃最高k位，右端补充k个0.
+
+`x>>k`: 右移k位，支持逻辑右移和算术右移。
+逻辑右移在左端补充k个0，算术右移则在左端补充k个最高有效位(符号位)。
+
+**对无符号数，右移必须是逻辑的**。
+
+**移位运算符是从左至右可结合的**。
+
+# 整数表示
+
+![整数的数据与算术操作术语。下标w表示数据中表示中的位数](terms.png){#fig:terms-png
 width="80%"}
