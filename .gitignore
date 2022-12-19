@@ -6,3 +6,5 @@
 *.tex
 *.toc
 *.swp
+*.pygtex
+*.pygstyle
