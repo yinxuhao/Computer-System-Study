@@ -179,7 +179,7 @@ width="80%"}
 **原理 1**. *无符号数编码的定义*
 
 *对向量$\vec{x} = [x_{w-1}, x_{w-2}, \ldots, x_{0}]$:
-$$B2U_w(\vec{x}) \dot{=} \sum_{i=0}^{w-1}x_i2^i$$*
+$$B2U_w(\vec{x}) \dot{=} \sum_{i=0}^{w-1}x_i2^i \refstepcounter{equation}\tag{\theequation}\label{a}$$*
 :::
 
 ::: theorem
@@ -194,7 +194,7 @@ $$B2U_w(\vec{x}) \dot{=} \sum_{i=0}^{w-1}x_i2^i$$*
 **原理 3**. *补码编码的定义*
 
 *对向量$\vec{x} = [x_{w-1}, x_{w-2}, \ldots, x_0]$:
-$$B2T_w(\vec{x}) \dot{=} -x_{w-1}2^{w-1} + \sum_{i=0}^{w-2}x_i2^i$$*
+$$B2T_w(\vec{x}) \dot{=} -x_{w-1}2^{w-1} + \sum_{i=0}^{w-2}x_i2^i \refstepcounter{equation}\tag{\theequation}\label{b}$$*
 :::
 
 ::: theorem
@@ -219,19 +219,58 @@ $$B2T_w(\vec{x}) \dot{=} -x_{w-1}2^{w-1} + \sum_{i=0}^{w-2}x_i2^i$$*
                 x+2^w, & x < 0 \\
                 x, & x\ge 0
             \end{array}
-        \right.$$*
+        \right. \refstepcounter{equation}\tag{\theequation}\label{c}$$*
+:::
+
+::: proof
+*Proof.* 补码转换为无符号数
+
+比较式[\[a\]](#a){reference-type="ref"
+reference="a"}和[\[b\]](#b){reference-type="ref"
+reference="b"}，我们发现对于位模式$\vec{x}$，
+如果我们计算$B2U_w(\vec{x}) - B2T_w(\vec{x})$之差，得到：
+$$B2U_w(\vec{x}) - B2T_w(\vec{x}) = x_{w-1}2^w$$ 由此得到一个关系：
+$$B2U_w(\vec{x}) = x_{w-1}2^w + B2T_w(\vec{x}) \refstepcounter{equation}\tag{\theequation}\label{d}$$
+由此可得：
+$$B2U_w(T2B_w(x)) = T2U_w(x) = x + x_{w-1}2^w \refstepcounter{equation}\tag{\theequation}\label{e}$$
+式[\[e\]](#e){reference-type="ref"
+reference="e"}的计算：将$T2B_w(x)$当作x代入[\[d\]](#d){reference-type="ref"
+reference="d"}后得到。 由于运算$T2B_w$与$B2T_w$是对$\vec{x}$的逆运算，故
+$$\because B2U_w(T2B_w(x)) = x_{w-1}2^w + B2T_w(T2B_w(x)) \\
+            \therefore T2U_w(x) = x + x_{w-1}2^w$$
+根据[\[c\]](#c){reference-type="ref"
+reference="c"}的两种情况，在x的补码中，位$x_{w-1}$决定了x是否为负。
+$\blacksquare$ ◻
 :::
 
 ::: theorem
 **原理 6**. *无符号数转换为补码*
 
 *对满足$0 \le x \le UMax_w$的u有： $$U2T_w(u) = \left\{
-            \begin{array}{ll}
-                u, & u \le TMax_w \\
-                u-2^w, & u >TMax
-            \end{array}
-            \right.$$*
+                \begin{array}{ll}
+                    u, & u \le TMax_w \\
+                    u-2^w, & u >TMax
+                \end{array}
+            \right. \refstepcounter{equation}\tag{\theequation}\label{1}$$*
 :::
+
+::: proof
+*Proof.* 设$\vec{x} = U2B_w(u)$，则这个位向量也是$U2T_w(u)$的补码表示。
+式[\[a\]](#a){reference-type="ref"
+reference="a"}和式[\[b\]](#b){reference-type="ref"
+reference="b"}结合起来有
+$$U2T_w(u) = -u_{w-1}2^w + u \refstepcounter{equation}\tag{\theequation}\label{2}$$
+在u的无符号表示中，对式[\[1\]](#1){reference-type="ref"
+reference="1"}的两种情况来说，位$u_{w-1}$决定
+了u是否大于$TMax_w = 2^{w-1} - 1$。 $\blacksquare$ ◻
+:::
+
+以下图说明了函数U2T的行为。对于小的数，从无符号到有符号保留原值；
+一旦大于$TMax_w$，数字将被转换为一个负数值。
+
+![image](T2U.png){width="0.9\\linewidth"} []{#T2U label="T2U"}
+
+![image](U2T.png){width="0.7\\linewidth"} []{#U2T label="U2T"}
 
 ## 扩展一个数字的位表示
 
