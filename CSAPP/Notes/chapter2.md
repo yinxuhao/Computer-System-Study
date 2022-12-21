@@ -1,7 +1,7 @@
 ---
 author:
 - yinxuhao \[xuhao_yin@163.com\]
-date: 2022-12-19
+date: 2022-12-21
 title: 第二单元学习笔记
 ---
 
@@ -172,3 +172,82 @@ C语言中的位级运算，其实是按照各个位对应的位运算来的。
 
 ![整数的数据与算术操作术语。下标w表示数据中表示中的位数](terms.png){#fig:terms-png
 width="80%"}
+
+## 无符号数的编码
+
+::: theorem
+**原理 1**. *无符号数编码的定义*
+
+*对向量$\vec{x} = [x_{w-1}, x_{w-2}, \ldots, x_{0}]$:
+$$B2U_w(\vec{x}) \dot{=} \sum_{i=0}^{w-1}x_i2^i$$*
+:::
+
+::: theorem
+**原理 2**. *无符号数编码的唯一性*
+
+*函数$B2U_w$是一个双射*
+:::
+
+## 补码编码
+
+::: theorem
+**原理 3**. *补码编码的定义*
+
+*对向量$\vec{x} = [x_{w-1}, x_{w-2}, \ldots, x_0]$:
+$$B2T_w(\vec{x}) \dot{=} -x_{w-1}2^{w-1} + \sum_{i=0}^{w-2}x_i2^i$$*
+:::
+
+::: theorem
+**原理 4**. *补码编码的唯一性*
+
+*函数$B2T_w$是一个双射。*
+:::
+
+1\.
+补码的范围是不对称的：$|TMin| = |TMax| + 1$，即TMin没有与之对应的正数。
+这是因为0是非负数。
+
+2\. 最大的无符号数值刚好比补码的最大值的两倍大一点：$UMax_w = 2TMax_w+1$
+
+## 有符号和无符号数之间的转换
+
+::: theorem
+**原理 5**. *补码转换为无符号数*
+
+*对满足$TMin_w \le x \le TMax_w$的x有： $$T2U_w(x) = \left\{
+            \begin{array}{ll}
+                x+2^w, & x < 0 \\
+                x, & x\ge 0
+            \end{array}
+        \right.$$*
+:::
+
+::: theorem
+**原理 6**. *无符号数转换为补码*
+
+*对满足$0 \le x \le UMax_w$的u有： $$U2T_w(u) = \left\{
+            \begin{array}{ll}
+                u, & u \le TMax_w \\
+                u-2^w, & u >TMax
+            \end{array}
+            \right.$$*
+:::
+
+## 扩展一个数字的位表示
+
+用于将数据类型转换为一个更大的数据类型，例如32位$\rightarrow$`<!-- -->`{=html}64位。
+
+::: theorem
+**原理 7**. *无符号数的零扩展*
+
+*定义宽度为w的位向量$\vec{u} = [u_{w-1}, u_{w-2}, \ldots, u_0]$和宽度为
+$w^{\prime}$的位向量$\vec{u}^{\prime} = [\textcolor{blue}{0, \ldots, 0}, u_{w-1}, u_{w-1},
+        \ldots, u_0]$，其中，$w^{\prime} > w$。则$B2U_w(\vec{u}) = B2U_{w^{\prime}}(\vec{u}^{\prime})$。*
+:::
+
+::: theorem
+**原理 8**. *补码数的符号扩展*
+
+*定义宽度为w的位向量$\vec{x} = [\textcolor{blue}{x_{w-1}}, x_{w-2}, \ldots, x_0]$
+和宽度为w的位向量$\vec{x}^{\prime} = [\textcolor{blue}{x_{w-1}, \ldots, x_{w-1}, x_{w-1}}, x_{w-2}, \ldots, x_0]$，其中$w^{\prime} > w$。则$B2T_w(\vec{x}) = B2T_{w^{\prime}}(\vec{x}^{\prime})$。*
+:::
