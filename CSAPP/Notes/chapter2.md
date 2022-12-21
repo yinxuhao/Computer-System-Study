@@ -182,6 +182,11 @@ width="80%"}
 $$B2U_w(\vec{x}) \dot{=} \sum_{i=0}^{w-1}x_i2^i \refstepcounter{equation}\tag{\theequation}\label{a}$$*
 :::
 
+形象的展示如下图：
+
+![w=4的无符号数示例。当二进制表示中位i为1，数值就会相应加上$2^i$](unsi.png){#fig:unsi-png
+width="80%"}
+
 ::: theorem
 **原理 2**. *无符号数编码的唯一性*
 
@@ -196,6 +201,12 @@ $$B2U_w(\vec{x}) \dot{=} \sum_{i=0}^{w-1}x_i2^i \refstepcounter{equation}\tag{\t
 *对向量$\vec{x} = [x_{w-1}, x_{w-2}, \ldots, x_0]$:
 $$B2T_w(\vec{x}) \dot{=} -x_{w-1}2^{w-1} + \sum_{i=0}^{w-2}x_i2^i \refstepcounter{equation}\tag{\theequation}\label{b}$$*
 :::
+
+形象地展示如下图：
+
+![w=4的补码示例。把位3作为符号位，因此当它为1时，对数值的影响
+是$-2^3=-8$。这个权重在图中用带向左箭头的条表示](twop.png){#fig:twop-png
+width="80%"}
 
 ::: theorem
 **原理 4**. *补码编码的唯一性*
@@ -242,6 +253,10 @@ $$\because B2U_w(T2B_w(x)) = x_{w-1}2^w + B2T_w(T2B_w(x)) \\
 reference="c"}的两种情况，在x的补码中，位$x_{w-1}$决定了x是否为负。
 $\blacksquare$ ◻
 :::
+
+![比较当w=4时无符号数表示和补码表示(对补码和无符号数来说，
+最高有效位的权重分别是-8和+8，因此产生一个差为16)](cmp.png){#fig:cmp-png
+width="80%"}
 
 ::: theorem
 **原理 6**. *无符号数转换为补码*
