@@ -343,7 +343,7 @@ $$\begin{aligned}
 使用无符号数截断相同参数，则有
 $$B2U_w([x_{w-1}, x_{w-2}, \ldots, x_0])\ mod\ 2^k = B2U_k[x_{k-1}, x_{k-2}, \ldots, x_0]$$
 即，$x\ mod\ 2^k$能够被一个位级表示为$[x_{k-1}, x_{k-2}, \ldots, x_0]$
-的无符号数表示。将其转换为补码数则有$x^{\prime} = U_2T_k(x\ mod\ 2^k)$。
+的无符号数表示。将其转换为补码数则有$x^{\prime} = U2T_k(x\ mod\ 2^k)$。
 $\blacksquare$ ◻
 :::
 
@@ -352,4 +352,4 @@ $\blacksquare$ ◻
 无符号数的截断结果：
 $$B2U_k[x_{k-1}, x_{k-2}, \ldots, x_0] = B2U_w([x_{w-1}, x_{w-2}, \ldots, x_0])\ mod\ 2^k$$
 补码数字的截断结果：
-$$B2T_l[x_{k-1}, x_{k-2}, \ldots, x_0] = U_2T_k(B2U_w([x_{w-1}, x_{w-2}, \ldots, x_0])\ mod\ 2^k)$$
+$$B2T_l[x_{k-1}, x_{k-2}, \ldots, x_0] = U2T_k(B2U_w([x_{w-1}, x_{w-2}, \ldots, x_0])\ mod\ 2^k)$$
