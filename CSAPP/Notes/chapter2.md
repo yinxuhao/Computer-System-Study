@@ -1,7 +1,7 @@
 ---
 author:
 - yinxuhao \[xuhao_yin@163.com\]
-date: 2022-12-21
+date: 2022-12-23
 title: 第二单元学习笔记
 ---
 
@@ -305,3 +305,51 @@ $w^{\prime}$的位向量$\vec{u}^{\prime} = [\textcolor{blue}{0, \ldots, 0}, u_{
 *定义宽度为w的位向量$\vec{x} = [\textcolor{blue}{x_{w-1}}, x_{w-2}, \ldots, x_0]$
 和宽度为w的位向量$\vec{x}^{\prime} = [\textcolor{blue}{x_{w-1}, \ldots, x_{w-1}, x_{w-1}}, x_{w-2}, \ldots, x_0]$，其中$w^{\prime} > w$。则$B2T_w(\vec{x}) = B2T_{w^{\prime}}(\vec{x}^{\prime})$。*
 :::
+
+::: proof
+*Proof.* 补码数值的符号扩展
+
+令$w^{\prime} = w + k$，证明
+$$B2T_{w+k}([\underbrace{\textcolor{blue}{x_{w-1}, \ldots, x_{w-1}}}_{\textcolor{black}{k\ times}}, \textcolor{blue}{x_{w-1}}, x_{w-2}, \ldots, x_0]) = B2T_{w}([\textcolor{blue}{x_{w-1}}, x_{w-2}, \ldots, x_0])$$
+下面的证明是对k进行归纳。即: **如果我们能够证明符号扩展一位
+保持了数值不变，那么符号扩展任意位都能保持这种属性**。即：
+$$B2T_{w+1}([\textcolor{blue}{x_{w-1}, x_{w-1}}, x_{w-2}, \ldots, x_0]) = B2T_w([\textcolor{blue}{x_{w-1}}, x_{w-2}, \ldots, x_0])$$
+用式[\[b\]](#b){reference-type="ref"
+reference="b"}展开左边的表达式，得：
+
+$$\begin{aligned}
+            B2T_{w+1}([\textcolor{blue}{x_{w-1}, x_{w-1}}, x_{w-2}, \ldots, x_0]) &= -\textcolor{blue}{x_{w-1}}2^w + \sum^{w-1}_{i=0}x_i2^i \\
+                                                                                   &= - \textcolor{blue}{x_{w-1}}2^w + \textcolor{blue}{x_{w-1}}2^{w-1} + \sum_{i=0}^{w-2}x_i2^i \\
+                                                                                   &= -\textcolor{blue}{x_{w-1}}(2^w - 2^{w-1}) + \sum_{i=0}^{w-2}x_i2^i \\
+                                                                                   &= -\textcolor{blue}{x_{w-1}}2^{w-1} + \sum^{w-2}_{i=0}x_i2^i \\
+                                                                                   &= B2T_w([\textcolor{blue}{x_{w-1}}, x_{w-2}, \ldots, x_0])
+        .
+\end{aligned}$$
+其中使用的关键属性是$2^w - 2^{w-1} = 2^{w-1}$。$\blacksquare$ ◻
+:::
+
+## 截断数字
+
+::: theorem
+**原理 9**. *截断无符号数*
+
+*令$\vec{x}$等于位向量$[x_{w-1}, x_{w-2}, \ldots, x_0]$，而$\vec{x}^{\prime}$是将其截断为k位的结果：$\vec{x}^{\prime} = [x_{k-1}, x_{k-2}, \ldots, x_0]$。
+令$x = B2U_w(\vec{x}{^\prime})$。则$\vec{x}^{\prime} = x\ mod\ 2^k$。*
+:::
+
+::: proof
+*Proof.* 截断补码数值
+
+使用无符号数截断相同参数，则有
+$$B2U_w([x_{w-1}, x_{w-2}, \ldots, x_0])\ mod\ 2^k = B2U_k[x_{k-1}, x_{k-2}, \ldots, x_0]$$
+即，$x\ mod\ 2^k$能够被一个位级表示为$[x_{k-1}, x_{k-2}, \ldots, x_0]$
+的无符号数表示。将其转换为补码数则有$x^{\prime} = U_2T_k(x\ mod\ 2^k)$。
+$\blacksquare$ ◻
+:::
+
+总结：
+
+无符号数的截断结果：
+$$B2U_k[x_{k-1}, x_{k-2}, \ldots, x_0] = B2U_w([x_{w-1}, x_{w-2}, \ldots, x_0])\ mod\ 2^k$$
+补码数字的截断结果：
+$$B2T_l[x_{k-1}, x_{k-2}, \ldots, x_0] = U_2T_k(B2U_w([x_{w-1}, x_{w-2}, \ldots, x_0])\ mod\ 2^k)$$
