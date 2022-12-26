@@ -247,7 +247,7 @@ $$B2U_w(T2B_w(x)) = T2U_w(x) = x + x_{w-1}2^w \refstepcounter{equation}\tag{\the
 式[\[e\]](#e){reference-type="ref"
 reference="e"}的计算：将$T2B_w(x)$当作x代入[\[d\]](#d){reference-type="ref"
 reference="d"}后得到。 由于运算$T2B_w$与$B2T_w$是对$\vec{x}$的逆运算，故
-$$\because B2U_w(T2B_w(x)) = x_{w-1}2^w + B2T_w(T2B_w(x)) \\
+$$\because B2U_w(T2B_w(x)) = x_{w-1}2^w + B2T_w(T2B_w(x))\\
             \therefore T2U_w(x) = x + x_{w-1}2^w$$
 根据[\[c\]](#c){reference-type="ref"
 reference="c"}的两种情况，在x的补码中，位$x_{w-1}$决定了x是否为负。
@@ -367,8 +367,10 @@ $$B2T_l[x_{k-1}, x_{k-2}, \ldots, x_0] = U2T_k(B2U_w([x_{w-1}, x_{w-2}, \ldots, 
 
 # 整数运算
 
+## 无符号加法
+
 ::: theorem
-**原理 10**. *无符号加法*
+**原理 10**. *无符号数加法*
 
 *对满足$0 \le x, y \le 2^w$的x和y有： $$x + ^u_wy = \left\{
                 \begin{array}{lll}
@@ -379,5 +381,119 @@ $$B2T_l[x_{k-1}, x_{k-2}, \ldots, x_0] = U2T_k(B2U_w([x_{w-1}, x_{w-2}, \ldots, 
 :::
 
 ::: proof
-*Proof.* 无符号加法 ◻
+*Proof.* 无符号数加法
+
+一般而言，我们可以看到，如果$x + y < 2^w$, 和的
+$w + 1$位表示中最高位会等于0，因此丢弃它不会改变 这个数值。
+
+另一方面，如果$2^w \le x + y < 2^{w+1}$，和的
+$w + 1$位表示中的最高位会等于1，因此丢弃它就相当于 从和中减去了$2^w$。
+$\blacksquare$ ◻
+:::
+
+形象表示见下图：
+
+![无符号加法(4位字长，加法是模16的)](unsigned_add.png){#fig:unsigned_add-png
+width="80%"}
+
+整数加法和无符号加法着急拿的关系见下图：
+
+![整数加法和无符号加法间的关系。当x+y大于$2^w-1$时，其和溢出](int_uni_relashiption.png){#fig:int_uni_relashiption-png
+width="80%"}
+
+::: theorem
+**原理 11**. *检测无符号数加法中的溢出*
+
+*对在范围$0 \le x, y \le UMax_w$中的x和y，令
+$s \dot{=} x + ^u_wy$。则对计算s，当且仅当 $s < x$(或者等价的s \<
+y)时，发生了溢出。*
+:::
+
+::: proof
+*Proof.* 检测无符号数加法中的溢出
+
+通过观察发现$x + y \ge x$，因此如果s没有溢出，我们 能够肯定$s \ge x$。
+
+另一方面，如果s确实溢出了，我们就有$s = x + y - 2^w$。
+假设$y < 2^w$，我们就有$y - 2^w < 0$,因此
+$s = x + (y - 2^w) < x$。$\blacksquare$ ◻
+:::
+
+**模数加法形成了一种数学结构，称为阿贝尔群(Abelian goup),
+它是[可交换的和可结合的]{.underline}。它有一个单位元0，并且
+每个元素有一个加法逆元。**
+
+::: theorem
+**原理 12**. *无符号数求反*
+
+*对满足$0 \le x < 2^w$的任意x，其w位的无符号逆元$-^u_wx$ 由下式给出：
+$$-^u_wx = \left\{
+            \begin{array}{ll}
+                x, & x = 0 \\
+                2^w - x, & x > 0
+            \end{array}
+                \right.$$*
+:::
+
+::: proof
+*Proof.* 无符号数求反
+
+当$x = 0$时，加法逆元显然是0。对于$x > 0$，考虑值
+$2^w - x$。我们观察到这个数字在$0 < 2^w - x < 2^w$
+范围之内，并且$(x + 2^w - x)\ mod\ 2^w = 2^w\ mod\ 2^w = 0$。
+因此，它就是x在$+^u_w$下的逆元。$\blacksquare$ ◻
+:::
+
+## 补码加法
+
+定义$x + ^t_wy$为整数和$x + y$被截断为$w$位的结果，
+并将这个结果看做是**补码数**。
+
+::: theorem
+**原理 13**. *补码加法*
+
+*对满足$-2^{w-1} \le x, y \le 2^{w-1} - 1$的整数x和y， 有：
+$$x + ^t_wy = \left\{
+                \begin{array}{lll}
+                    x + y - 2^w, & 2^{w-1} \le x + y & Positive\ overflow \\
+                    x + y, & -2^{w-1} \le x + y < 2^{w-1} & Normal \\
+                    x + y + 2^w, & x + y < -2^{w-1} & Negative\ overflow
+                \end{array}
+                \right.$$*
+:::
+
+::: proof
+*Proof.* 补码加法
+
+由于补码加法和无符号数加法有相同的位级表示，故可以
+按照如下步骤表示运算$+^t_w$：
+
+1\. 将参数转换为无符号数
+
+2\. 执行无符号数加法
+
+3\. 将结果转换为补码
+
+$$x + ^t_wy \dot{=} U2T_w(T2U_w(x) + ^u_wT2U_w(y))$$
+由式[\[e\]](#e){reference-type="ref"
+reference="e"},$T2U_w(x) \iff x_{w-1}2^w + x$,
+$T2U_w(y) \iff y_{w-1}2^w + y$。使用属性【$+^u_w$是
+模$2^w$的加法，以及模数加法的属性，我们得到： $$\begin{aligned}
+            x + ^t_wy &= U2T_w(T2U_w(x) + ^u_wT2U_w(y) \\
+                        &= U2T_w[(x_{w-1}2^w + x + y_{w-1}2^w + y)\ mod\ 2^w]\\
+              &= U2T_w[(x + y)\ mod\ 2^w]
+        
+\end{aligned}$$
+
+定义$z \dot{=} x + y$，$z^{\prime} \dot{=} z\ mod\ 2^w$,
+$z^{\prime\prime} \dot{=} U2T_w(z^{\prime})$，
+$z^{\prime\prime} = x + ^t_wy$。下面分4种情况讨论：
+
+1\. $-2^w \le z < -2^{w-1}$
+
+2\. $-2^{w-1} \le z < 0$
+
+3\. $0 \le z < 2^{w-1}$
+
+4\. $2^{w-1} \le z < 2^w$ ◻
 :::
