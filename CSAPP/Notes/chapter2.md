@@ -1,7 +1,7 @@
 ---
 author:
 - yinxuhao \[xuhao_yin@163.com\]
-date: 2022-12-26
+date: 2022-12-27
 title: 第二单元学习笔记
 ---
 
@@ -489,11 +489,59 @@ $T2U_w(y) \iff y_{w-1}2^w + y$。使用属性【$+^u_w$是
 $z^{\prime\prime} \dot{=} U2T_w(z^{\prime})$，
 $z^{\prime\prime} = x + ^t_wy$。下面分4种情况讨论：
 
-1\. $-2^w \le z < -2^{w-1}$
+1\. $-2^w \le z < -2^{w-1}$, 则$z^{\prime} = z + 2^w$。
+于是得出$0 \le z^{\prime} < -2^{w-1} + 2^w = 2^{w-1}$。
+检查式[\[1\]](#1){reference-type="ref"
+reference="1"}可以看到$z^{\prime}$在满足
+$z^{\prime\prime} = z^{\prime}$的范围之内。
+这种情况称作**负溢出(negative overflow)**。
+将两个负数x和y相加(这是得到$z < -2^{w-1}$的唯一方式)，
+得到一个非负的结果$z^{\prime\prime} = x + y + 2^w$。
 
-2\. $-2^{w-1} \le z < 0$
+2\. $-2^{w-1} \le z < 0$，则$z^\prime = z + 2^w$。
+于是得出$-2^{w-1} + 2^w = 2^{w-1} \le z^\prime < 2^w$。
+检查式[\[1\]](#1){reference-type="ref"
+reference="1"}可以看到$z^\prime$在满足
+$z^{\prime\prime} = z^\prime - 2^w$的范围之内。
+因此$z^{\prime\prime} = z^\prime - 2^w = z + 2^w - 2^w = z$。
+即，补码和$z^{\prime\prime}$等于整数和$x + y$。
 
-3\. $0 \le z < 2^{w-1}$
+3\. $0 \le z < 2^{w-1}$，则$z^\prime = z$。
+于是得出$0 \le z^\prime < 2^{w-1}$，因此
+$z^{\prime\prime} = z^\prime = z$。于是
+补码和$z^{\prime\prime}$又等于整数和$x + y$。
 
-4\. $2^{w-1} \le z < 2^w$ ◻
+4\. $2^{w-1} \le z < 2^w$，则$z^\prime = z$。
+于是得出$2^{w-1} \le z^\prime < 2^w$。
+在这个范围内，$z^{\prime\prime} = z^\prime - 2^w$。
+因此得到$z^{\prime\prime} = x + y -2^w$。 这种情况称作**正溢出(positive
+overflow)**。 将整数x和y相加(这是得到$z \ge 2^{w-1}$的唯一方式)，
+得出一个负数结果$z^{\prime\prime} = x + y - 2^w$。 $\blacksquare$ ◻
+:::
+
+补码加法的形象表示见下图：
+
+![补码加法(字长为4位的情况下，当
+$x + y < -8$时，产生负溢出；$x + y \ge 8$时，产生正溢出)](two_comp_add.png){#fig:two_comp_add-png
+width="80%"}
+
+::: theorem
+**原理 14**. *检测补码加法中的溢出*
+
+*对满足$TMin_w \le x, y \le TMax_w$的x和y，令
+$s \dot{=} x + ^t_wy$。当且仅当$x > 0, y > 0$，
+但$s \le 0$时，计算s发生了正溢出。当且仅当
+$x < 0, y < 0$，但$s \ge 0$时，计算s发生了负溢出。*
+:::
+
+::: proof
+*Proof.* 检测补码加法中的溢出
+
+1\. 分析正溢出：若$x > 0, y > 0$，而$s \le 0$，
+那么显然发生了正溢出。反过来，正溢出的条件为 1)
+$x > 0, y > 0$(或者$x + y < TMax_w$)， 2) $s \le 0$。
+
+2\. 分析负溢出：若$x < 0, y < 0$，而$s \ge 0$,
+那么显然发生了负溢出。反过来，负溢出的条件为 1)
+$x < 0, y < 0$(或者$x + y > TMin_w$)， 2) $s \ge 0$。 $\blacksquare$ ◻
 :::
