@@ -1,7 +1,7 @@
 ---
 author:
 - yinxuhao \[xuhao_yin@163.com\]
-date: 2022-12-19
+date: 2022-12-27
 title: 第二章习题
 ---
 
@@ -49,3 +49,63 @@ title: 第二章习题
 [除了最高有效位1，整数的其他所有位都嵌在浮点数中。]{style="color: red"}
 
 另外，浮点数中一些非零的高位不与整数中的高位相匹配。
+
+# 2.25
+
+考虑下列代码，这段代码试图计算数组a中所有元素的和，其中
+元素的数量由参数length给出。
+
+``` C
+        /* WARNING: This is buggy code */
+        float sum_elements(float a[], unsigned length) {
+            int i;
+            float result = 0;
+
+            for (i = 0; i <= length - 1; i++)
+                result += a[i];
+            return result;
+        }
+```
+
+因为length是无符号数，所以当它为0时，执行$length - 1$,
+会产生一个非常大的正数。所以程序永远都不会停，直至发生 内存错误。
+
+要修改代码，需要将length定义为int类型，或者用`i < length`
+作为判断条件，防止无符号数隐式转换为int。
+
+# 3.26
+
+现在给你一个任务，写一个函数用来判定一个字符串是否比另一个
+更长。前提是你要用字符串库函数strlen，它的声明如下：
+
+``` C
+        /* Prototype for library function strlen */
+        size_t strlen(const char *s);
+```
+
+最开始你写的函数是这样的：
+
+``` C
+        /* Determine whether string s is longer than string t */
+        /* WARNING: This function is buggy */
+        int strlonger(char *s, char *t) {
+            return strlen(s) - strlen(t) > 0;
+        }
+```
+
+当你在一些示例数据上测试这个函数时，一切似乎都是正常的。
+进一步研究发现在头文件`stdio.h`中数据类型`size_t` 是定义成unsigned
+int的。
+
+## 在什么情况下，这个函数会产生不正确的结果？
+
+s的长度小于t
+
+## 解释为什么会出现这样不正确的结果。
+
+当s的长度小于t时，理应会产生一个负数。但是由于
+`size_t`是无符号数，所以会转换为一个超大的正数， 导致检测值永远为true。
+
+## 说明如何修改这段代码好让它能更可靠地工作。
+
+修改减法运算为直接比较，如下修改： 即可。
