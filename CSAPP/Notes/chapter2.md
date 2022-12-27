@@ -545,3 +545,90 @@ $x > 0, y > 0$(或者$x + y < TMax_w$)， 2) $s \le 0$。
 那么显然发生了负溢出。反过来，负溢出的条件为 1)
 $x < 0, y < 0$(或者$x + y > TMin_w$)， 2) $s \ge 0$。 $\blacksquare$ ◻
 :::
+
+## 补码的非
+
+::: theorem
+**原理 15**. *补码的非*
+
+*对满足$TMin_w \le x \le TMax_w$的x，其补码的非 $-^t_w$由下式给出：
+$$-^t_wx = \left\{
+                \begin{array}{ll}
+                    TMin_w, & x = TMin_w \\
+                    -x, & x > TMin_w
+                \end{array}
+                \right.$$*
+:::
+
+即，对w位的补码加法来说，$TMin_w$是自己的加法的逆，其他
+任何数值x都有-x作为其加法的逆。
+
+::: proof
+*Proof.* 补码的非
+
+观察发现$TMin_w + TMin_w = -2^{w-1} + (-2^{w-1}) = -2^w$。
+这将导致负溢出，因此$TMin_w + ^t_wTMin_w = -2^w + 2^w = 0$。
+对满足$x > TMin_w$的x，数值-x可以表示为一个w位的补码，
+它们的和$-x + x = 0$。 $\blacksquare$ ◻
+:::
+
+### 补码非的两种快速求法
+
+1\. 执行位级补码非可以对每一位求补，再对结果加1. 即，$-x = {\sim}x + 1$.
+
+2\. 将位向量分为两部分：假设k是最右边的1的位置，故
+x可表示为$[x_{w-1}, x_{w-2}, \ldots, x_{k+1}, 1, 0, \ldots, 0]$。
+这个值的非写成二进制格式就是$[{\sim}x_{w-1}, {\sim}x_{w-2}, \ldots, {\sim}x_{k+1}, 1, 0, \ldots, 0]$。即，对k左边的所有位取反。
+
+## 无符号乘法
+
+::: theorem
+**原理 16**. *无符号数乘法*
+
+*对满足$0 \le x, y \le UMax_w$的x和y有：
+$$x * ^u_wy = (x \cdot y)\ mod\ 2^w \refstepcounter{equation}\tag{\theequation}\label{2.16}$$*
+:::
+
+## 补码乘法
+
+::: theorem
+**原理 17**. *补码乘法*
+
+*对满足$TMin_w \le x, y \le TMax_w$的x和y有：
+$$x * ^t_wy = U2T_w((x \cdot y)mod\ 2^w) \refstepcounter{equation}\tag{\theequation}\label{2.17}$$*
+:::
+
+::: theorem
+**原理 18**. *无符号数和补码乘法的位级等价性*
+
+*给定长度为w的位向量$\vec{x}$和$\vec{y}$，用补码形式
+的位向量表示来定义整数x和y：$x = B2T_w(\vec{x})$,
+$y = B2T_w(\vec{y})$。用无符号数形式的位向量表示来定义
+非负整数$x^\prime$和$y^\prime$：
+$x^\prime = B2U_w(\vec{x})$，$y^\prime = B2U_w(\vec{y})$。 则
+$$T2B_w(x * ^t_wy) = U2B_w(x^\prime * ^u_wy^\prime)$$*
+:::
+
+::: proof
+*Proof.* 无符号和补码乘法的位级等价性
+
+据式[\[1\]](#1){reference-type="ref"
+reference="1"}，我们有$x^\prime = x + x_{w-1}2^w$和
+$y^\prime = y + y_{w-1}2^w$。这些值的乘积模$2^w$ 可得：
+$$\begin{aligned}
+            (x^\prime \cdot y^\prime)mod\ 2^w &= 
+            [(x + x_{w-1}2^w) \cdot (y + y_{w-1}2^w)]mod\ 2^w \\
+                                              &= [x \cdot y + (x_{w-1}y + y_{w-1}x)2^w + x_{w-1}y_{w-1}2^{2w}]mod\ 2^w \\
+                                              &= (x \cdot y)\ mod\ 2^w \refstepcounter{equation}\tag{\theequation}\label{2.18}
+        
+\end{aligned}$$ 由于模运算符，所有带有权重$2^w$和$2^{2w}$的项都丢掉了。
+根据等式[\[2.17\]](#2.17){reference-type="ref"
+reference="2.17"}，我们有$x * ^t_wy = U2T_w((x \cdot y)\ mod\ 2^w)$。对等式两边应用操作$T2U_w$有：
+$$T2U_w(x * ^t_wy) = T2U_w(U2T_w((x \cdot y)\ mod\ 2^w)) = (x \cdot y)\ mod\ 2^w$$
+由该结果与式[\[2.16\]](#2.16){reference-type="ref"
+reference="2.16"}和式[\[2.18\]](#2.18){reference-type="ref"
+reference="2.18"}结合得到
+$T2U_w(x * ^t_wy) = (x^\prime \cdot y^\prime)\ mod\ 2^w = x^\prime * ^t_wy^\prime$。对该式两边应用$U2B_w$，得：
+$$U2B_w(T2U_w(x * ^t_wy)) = T2B_w(x * ^t_wy) = U2B_w(x^\prime * ^u_wy^\prime)$$
+$\blacksquare$ ◻
+:::
