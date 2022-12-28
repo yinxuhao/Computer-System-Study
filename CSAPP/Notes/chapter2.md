@@ -1,7 +1,7 @@
 ---
 author:
 - yinxuhao \[xuhao_yin@163.com\]
-date: 2022-12-27
+date: 2022-12-28
 title: 第二单元学习笔记
 ---
 
@@ -630,5 +630,69 @@ reference="2.16"}和式[\[2.18\]](#2.18){reference-type="ref"
 reference="2.18"}结合得到
 $T2U_w(x * ^t_wy) = (x^\prime \cdot y^\prime)\ mod\ 2^w = x^\prime * ^t_wy^\prime$。对该式两边应用$U2B_w$，得：
 $$U2B_w(T2U_w(x * ^t_wy)) = T2B_w(x * ^t_wy) = U2B_w(x^\prime * ^u_wy^\prime)$$
+$\blacksquare$ ◻
+:::
+
+## 乘以常数
+
+**编译器使用移位和加法运算组合来代替乘以常数因子的乘法。**
+
+::: theorem
+**原理 19**. *乘以2的幂*
+
+*设x为位模式$[x_{w-1}, x_{w-2}, \ldots, x_0]$表示的
+无符号整数。那么，对于任何$k \ge 0$，我们都认为
+$[x_{w-1}, x_{w-2}, \ldots, x_0, \textcolor{blue}{0, \ldots, 0}]$给出了$x2^k$的$w + k$位的无符号表示，这里右边增加了k个0.*
+:::
+
+::: proof
+*Proof.* 乘以2的幂
+
+$$\begin{aligned}
+            B2U_{w+k}([x_{w-1}, x_{w-2}, \ldots, x_0, \textcolor{blue}{0, \ldots, 0}]) &= \sum^{w-1}_{i=0}x_i2^{i+k} \\
+                                                                                        &= \left[\sum^{w-1}_{i=0}x_i2^i \right] \cdot 2^k \\
+                                                                                        &= x2^k
+        
+\end{aligned}$$ $\blacksquare$ ◻
+:::
+
+::: theorem
+**原理 20**. *与2的幂相乘的无符号乘法*
+
+*C变量x和k有无符号数值x和k，且$0 \le k < w$, 则C表达式
+$x \ll k$产生数值$x * ^u_w2^k$。*
+:::
+
+::: theorem
+**原理 21**. *与2的幂相乘的补码乘法*
+
+*C变量x和k有补码值x和无符号数值k，且$0 \le k < w$，则C
+表达式$x \ll k$产生数值$x * ^t_w2^k$。*
+:::
+
+## 除以2的幂
+
+::: theorem
+**原理 22**. *除以2的幂的无符号除法*
+
+*C变量x和k有无符号数值x和k，且$0 \le k < w$，则
+C表达式$x \gg k$产生数值$\left\lfloor x / 2^k \right\rfloor$*
+:::
+
+::: proof
+*Proof.* 除以2的幂的无符号除法
+
+设x为位模式$[x_{w-1}, x_{w-2}, \ldots, x_0]$表示的无符号
+整数，而k的取值范围为$0 \le k < w$。设$x^\prime$为
+$w - k$位位表示$[x_{w-1}, x_{w-2}, \ldots, x_k]$的无符号
+数，而$x^{\prime\prime}$为k位位表示$[x_{k-1}, \ldots, x_0]$
+的无符号数。由此，$x = 2^kx^\prime + x^{\prime\prime}$，
+而$0 \le x^{\prime\prime} < 2^k$。因此可得
+$\left\lfloor x / 2^k \right\rfloor = x^\prime$。
+
+对位向量$[x_{w-1}, x_{w-2}, \ldots, x_0]$逻辑右移k位 会得到向量
+$$[\textcolor{blue}{0, \ldots, 0}, x_{w-1}, x_{w-2}, \ldots, x_k]$$
+
+这个位向量有数值$x^\prime$，该值可以通过计算$x \gg k$得到。
 $\blacksquare$ ◻
 :::
