@@ -63,3 +63,59 @@ title: 第二章习题编程
 ## x的最高有效字节中的位都等于0.
 
 \|x = x & ((unsigned) -1 \>\> 8);\|
+
+# 2.62
+
+编写一个函数`int_shifts_are_arithmetic()`，
+在对int类型的数使用算术右移的机器上运行时这个函数生成1，
+而在其他情况下生成0.你的代码应该可以运行在任何字长的机器
+上。在几种机器上测试你的代码。
+
+``` C++
+//
+// Created by yinxuhao on 2022/12/29.
+//
+
+#include "chapter2.h"
+
+using namespace std;
+
+void get_bit_length(int i, int &a, int &b) {
+    auto x = (unsigned long long) i;
+    while (x) {
+        x >>= 1;
+        ++a;
+    }
+    auto y = (unsigned) i;
+    while (y) {
+        y >>= 1;
+        ++b;
+    }
+}
+
+bool int_shifts_are_arithmetic() {
+    int a = 0;
+    int b = 0;
+    get_bit_length(-1, a, b);
+    unsigned i = -1;
+    int x = (int) i;
+    int shift = a - b + 4;
+//    return x / 2 != x >> 1;
+    return x << shift >> shift == i;
+}
+```
+
+# 2.63
+
+将下面的C函数代码补充完整。函数srl用算术右移(由值xsra给出)
+来完成逻辑右移，后面的其他操作不包括右移或者除法。函数sra
+用逻辑右移(由值xsrl给出)来完成算术右移，后面的其他操作不包括
+右移或者除法。可以通过计算`8*sizeof(int)`来确定数据类型
+int中的位数w。位移量k的取值范围为0$\sim$w-1。
+
+``` C++
+        unsigned srl(unsigned x, int k) {
+            /* Perform shift arithmetically */
+            unsigned xsra = (int) x >> k;
+        }
+```
