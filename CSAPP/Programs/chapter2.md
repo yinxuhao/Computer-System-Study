@@ -1,7 +1,7 @@
 ---
 author:
 - yinxuhao \[xuhao_yin@163.com\]
-date: 2022-12-29
+date: 2022-12-30
 title: 第二章习题编程
 ---
 
@@ -114,8 +114,31 @@ bool int_shifts_are_arithmetic() {
 int中的位数w。位移量k的取值范围为0$\sim$w-1。
 
 ``` C++
-        unsigned srl(unsigned x, int k) {
-            /* Perform shift arithmetically */
-            unsigned xsra = (int) x >> k;
-        }
+//
+// Created by yinxuhao on 2022/12/30.
+//
+
+#include "chapter2.h"
+
+using namespace std;
+
+unsigned srl(unsigned x, int k) {
+    /* Perform shift arithmetically */
+    unsigned xsra = (int) x >> k;
+    /* Begin solve */
+    int int_bits = 8 * sizeof(int);
+    unsigned xsla = 1 << (int_bits - k);
+    unsigned mask = (INT_MAX + xsla) << 1;
+    return xsra & mask;
+}
+
+unsigned sra(int x, int k) {
+    /* Perform shift logically */
+    int xsrl = (unsigned) x >> k;
+    /* Begin solve */
+    int int_bits = 8 * sizeof(int);
+    unsigned negative = -1 * ((x | INT_MIN) == x);
+    unsigned mask = negative << (int_bits - k);
+    return xsrl | mask;
+}
 ```
