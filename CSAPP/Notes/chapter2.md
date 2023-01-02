@@ -1,7 +1,7 @@
 ---
 author:
 - yinxuhao \[xuhao_yin@163.com\]
-date: 2022-12-28
+date: 2023-01-02
 title: 第二单元学习笔记
 ---
 
@@ -696,3 +696,50 @@ $$[\textcolor{blue}{0, \ldots, 0}, x_{w-1}, x_{w-2}, \ldots, x_k]$$
 这个位向量有数值$x^\prime$，该值可以通过计算$x \gg k$得到。
 $\blacksquare$ ◻
 :::
+
+::: theorem
+**原理 23**. *除以2的幂的补码除法，向下舍入*
+
+*C变量x和k分别有补码值x和无符号数值k，且$0 \le k < w$，
+则当执行算术移位时，C表达式$x \gg k$产生数值
+$\left\lfloor x / 2^k \right\rfloor$。*
+:::
+
+::: proof
+*Proof.* 除以2的幂的补码除法，向下舍入
+
+设x的位模式$[x_{w-1}, x_{w-2}, \ldots, x_0]$表示的
+补码整数，而k的取值范围为$0 \le k < w$。设
+$x^\prime$为$w-k$位$[x_{w-1}, x_{w-2}, \ldots, x_k]$
+表示的补码数，而$x^{\prime\prime}$为低k位
+$[x_{k-1}, \ldots, x_0]$表示的无符号数。通过
+与对无符号数情况类似的分析，可得$x = 2^kx^\prime + x^{\prime\prime}$，
+而$0 \le x^{\prime\prime} < 2^k$，得到$x^\prime = \left\lfloor x / 2^k \right\rfloor$。算术右移位向量$[\textcolor{blue}{x_{w-1}}, x_{w-2}, \ldots, x_0]$k位，得
+$$[\textcolor{blue}{x_{w-1}, \ldots, x_{w-1}, x_{w-1}}, x_{w-2}, \ldots, x_k]$$
+它刚好就是将$[x_{w-1}, x_{w-2}, \ldots, x_k]$从$w-k$
+位符号扩展到w位。故这个移位后的位向量就是
+$\left\lfloor x / 2^k \right\rfloor$的补码表示。 $\blacksquare$ ◻
+:::
+
+::: theorem
+**原理 24**. *除以2的幂的补码除法，向上舍入*
+
+*C变量x和k分别有补码值x和无符号数值k，且$0 \le k < w$，
+则当执行算术移位时，C表达式$(x+(1\ll k)-1)\gg k$产生
+数值$\left\lceil x / 2^k \right\rceil$。*
+:::
+
+::: proof
+*Proof.* 除以2的幂的补码除法，向上舍入
+
+查看$\left\lceil x / y \right\rceil = \left\lfloor (x + y - 1) / y \right\rfloor$，
+假设$x = qy + r$，其中$0 \le r < y$，得到$(x + y - 1) / y = q + (r + y - 1) / y$，因此$\left\lfloor (x + y - 1) / y \right\rfloor = q + \left\lfloor (r + y - 1) / y \right\rfloor$。当$r = 0$时，后面一项等于0，而当$r > 0$时，等于1.即，
+通过给x增加一个偏量$y - 1$，然后再将除法向下舍入，
+当y整除x时，我们得到q，否则得到$q + 1$。
+
+故当$y = 2^k$，C表达式$x + (1\ll k) - 1$得到数值
+$x + 2^k - 1$。将这个值算术右移k位即产生
+$\left\lfloor x / 2^k \right\rfloor$。 $\blacksquare$ ◻
+:::
+
+# 浮点数
