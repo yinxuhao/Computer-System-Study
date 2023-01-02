@@ -1,6 +1,7 @@
 //
 // Created by yinxuhao on 2022/12/30.
 // Exercise 2.64 *
+// 2022/12/31: Fix a bug
 //
 
 #include "chapter2.h"
@@ -8,6 +9,10 @@
 using namespace std;
 
 int any_odd_one(unsigned x) {
+    /* define odd is read from right and
+     * its count number start from 0 ,
+     * so 101010 return 1 and also 000010
+     * but not 10101 or 00001. */
     unsigned bit_1 = 1 << 1;
     unsigned bit_3 = 1 << 3;
     unsigned bit_5 = 1 << 5;
@@ -25,7 +30,7 @@ int any_odd_one(unsigned x) {
     unsigned bit_29 = 1 << 29;
     unsigned bit_31 = 1 << 31;
     unsigned odd = bit_1 | bit_3 | bit_5 | bit_7 | bit_9 |
-              bit_11 | bit_13 | bit_15 | bit_17 | bit_19 |
-              bit_21 | bit_23 | bit_25 | bit_27 | bit_29 | bit_31;
-    return x - (odd & x) == ((odd >> 1) & x);
+                   bit_11 | bit_13 | bit_15 | bit_17 | bit_19 |
+                   bit_21 | bit_23 | bit_25 | bit_27 | bit_29 | bit_31;
+    return (odd & x) != 0;
 }
