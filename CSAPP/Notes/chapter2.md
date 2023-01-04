@@ -751,4 +751,17 @@ $\left\lfloor x / 2^k \right\rfloor$。 $\blacksquare$ ◻
 十进制的小数表示法如下：
 $$d_md_{m-1}\ldots d_1d_0.d_{-1}d_{-2}\ldots d_{-n}$$
 每个十进制数$d_{i}$的取值范围是$0\sim 9$。故 该表达描述的数值d定义为：
-$$d = \sum^m_{i=-n}10^i \times d_i$$
+$$d = \sum^m_{i=-n}10^i \times d_i$$ 类似的，一个形如
+$$b_mb_{m-1}\ldots b_1b_0.b_{-1}b_{-2}\ldots b_{-n-1}b_{-n}$$
+的表示法定义的0 1串数字定义如下： $$b = \sum^m_{i=-n}2^i \times b_i$$
+
+::: wrapfigure
+r0.8 ![image](fraction_binary.png){width="0.8\\linewidth"}
+:::
+
+符号`.`现在是二进制的点，点左边的位权是2的正幂，
+点右边的位的权是2的负幂。
+
+例如，$101.11_2$表示数字$1 \times 2^2 = 0 \times 2^1
+     + 1 \times 2^0 + 1 \times 2^{-1} + 1 \times 2^{-2}
+      = 4 + 0 + 1 + \frac{1}{2} + \frac{1}{4} = 5 \frac{3}{4}$
