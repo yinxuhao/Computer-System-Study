@@ -1,7 +1,7 @@
 ---
 author:
 - yinxuhao \[xuhao_yin@163.com\]
-date: 2022-12-30
+date: 2023-01-02
 title: 第二章习题编程
 ---
 
@@ -74,33 +74,23 @@ title: 第二章习题编程
 ``` C++
 //
 // Created by yinxuhao on 2022/12/29.
+// Exercise 2.62 ***
+// 20230101: Get rid of the while loop because of the rule.
 //
 
 #include "chapter2.h"
 
 using namespace std;
 
-void get_bit_length(int i, int &a, int &b) {
-    auto x = (unsigned long long) i;
-    while (x) {
-        x >>= 1;
-        ++a;
-    }
-    auto y = (unsigned) i;
-    while (y) {
-        y >>= 1;
-        ++b;
-    }
-}
-
 bool int_shifts_are_arithmetic() {
-    int a = 0;
-    int b = 0;
-    get_bit_length(-1, a, b);
+    int a = 8 * sizeof(int);
+    int b = 8 * sizeof(long);
+    //get_bit_length(-1, a, b);
     unsigned i = -1;
     int x = (int) i;
     int shift = a - b + 4;
-//    return x / 2 != x >> 1;
+    //return x / 2 != x >> 1;  /* method 1*/
+    /* method 2 */
     return x << shift >> shift == i;
 }
 ```
@@ -116,6 +106,8 @@ int中的位数w。位移量k的取值范围为0$\sim$w-1。
 ``` C++
 //
 // Created by yinxuhao on 2022/12/30.
+// Exercise 2.63 ***
+// 2022/12/31: Fix some Bugs
 //
 
 #include "chapter2.h"
@@ -127,8 +119,8 @@ unsigned srl(unsigned x, int k) {
     unsigned xsra = (int) x >> k;
     /* Begin solve */
     int int_bits = 8 * sizeof(int);
-    unsigned xsla = 1 << (int_bits - k);
-    unsigned mask = (INT_MAX + xsla) << 1;
+    unsigned xsla = 1 << (int_bits - k - 1);
+    unsigned mask = (INT_MAX + xsla) << 1 | 1;
     return xsra & mask;
 }
 
@@ -142,3 +134,64 @@ unsigned sra(int x, int k) {
     return xsrl | mask;
 }
 ```
+
+# 2.64
+
+写出代码实现如下函数：
+
+``` C
+        /* Return 1 when any odd bit of x equals 1; 0 otherwise.
+           Assume w=32 */
+        int any_odd_one(unsigned x);
+```
+
+``` C++
+//
+// Created by yinxuhao on 2022/12/30.
+// Exercise 2.64 *
+// 2022/12/31: Fix a bug
+//
+
+#include "chapter2.h"
+
+using namespace std;
+
+int any_odd_one(unsigned x) {
+    /* define odd is read from right and
+     * its count number start from 0 ,
+     * so 101010 return 1 and also 000010
+     * but not 10101 or 00001. */
+    unsigned bit_1 = 1 << 1;
+    unsigned bit_3 = 1 << 3;
+    unsigned bit_5 = 1 << 5;
+    unsigned bit_7 = 1 << 7;
+    unsigned bit_9 = 1 << 9;
+    unsigned bit_11 = 1 << 11;
+    unsigned bit_13 = 1 << 13;
+    unsigned bit_15 = 1 << 15;
+    unsigned bit_17 = 1 << 17;
+    unsigned bit_19 = 1 << 19;
+    unsigned bit_21 = 1 << 21;
+    unsigned bit_23 = 1 << 23;
+    unsigned bit_25 = 1 << 25;
+    unsigned bit_27 = 1 << 27;
+    unsigned bit_29 = 1 << 29;
+    unsigned bit_31 = 1 << 31;
+    unsigned odd = bit_1 | bit_3 | bit_5 | bit_7 | bit_9 |
+                   bit_11 | bit_13 | bit_15 | bit_17 | bit_19 |
+                   bit_21 | bit_23 | bit_25 | bit_27 | bit_29 | bit_31;
+    return (odd & x) != 0;
+}
+```
+
+# 2.65
+
+写出代码实现如下函数：
+
+``` C
+        /* Return 1 when x contains an odd number of 1s; 0 otherwise.
+           Assume w=32 */
+        int odd_ones(unsigned x);
+```
+
+**限制条件**： 你的代码最多只能包含12个算术运算、位运算和逻辑运算。
