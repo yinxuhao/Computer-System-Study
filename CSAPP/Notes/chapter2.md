@@ -1,7 +1,7 @@
 ---
 author:
 - yinxuhao \[xuhao_yin@163.com\]
-date: 2023-01-02
+date: 2023-01-04
 title: 第二单元学习笔记
 ---
 
@@ -743,3 +743,12 @@ $\left\lfloor x / 2^k \right\rfloor$。 $\blacksquare$ ◻
 :::
 
 # 浮点数
+
+浮点表示对形如$V = x \times 2^y$的有理数进行编码。
+
+## 二进制小数
+
+十进制的小数表示法如下：
+$$d_md_{m-1}\ldots d_1d_0.d_{-1}d_{-2}\ldots d_{-n}$$
+每个十进制数$d_{i}$的取值范围是$0\sim 9$。故 该表达描述的数值d定义为：
+$$d = \sum^m_{i=-n}10^i \times d_i$$
