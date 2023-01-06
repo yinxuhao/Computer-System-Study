@@ -1,7 +1,7 @@
 ---
 author:
 - yinxuhao \[xuhao_yin@163.com\]
-date: 2023-01-02
+date: 2023-01-06
 title: 第二章习题编程
 ---
 
@@ -195,3 +195,29 @@ int any_odd_one(unsigned x) {
 ```
 
 **限制条件**： 你的代码最多只能包含12个算术运算、位运算和逻辑运算。
+
+``` C++
+//
+// Created by yinxuhao on 2023/1/1.
+// Exercise 2.65 ****
+//
+
+#include "chapter2.h"
+
+using namespace std;
+
+int odd_ones(unsigned x) {
+    unsigned y = ~x;
+    unsigned t = y >> 16;
+    y ^= t;
+    t = y >> 8;
+    y ^= t;
+    t = y >> 4;
+    y ^= t;
+    t = y >> 2;
+    y ^= t;
+    t = y >> 1;
+    y ^= t;
+    return (int) (y & 1);
+}
+```
